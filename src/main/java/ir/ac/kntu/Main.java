@@ -417,6 +417,7 @@ public class Main {
             makeSmileyFace();
         }
     }
+
     public static void makeSmileyFace(){
         JFrame frame = new JFrame("Clown Face");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
