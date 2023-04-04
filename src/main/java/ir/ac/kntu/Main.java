@@ -9,22 +9,17 @@ import java.util.Scanner;
 
 public class Main {
     ///setup:
-
     static int lineCounter = 1;
 
     static int orderCounter = 0;
 
     static int indentSpace = 0;
 
-    static int  switchIndent = -1;
+    static int switchIndent = -1;
 
-    static int  switchLine = -1;
+    static int switchLine = -1;
 
     static boolean hasPackage = false;
-
-    static boolean insideClass = false;
-
-    static boolean insideMethod = false;
 
     static boolean switchDefaultCheck = false;
 
@@ -89,7 +84,7 @@ public class Main {
 
         if (trimmedLine.matches(importRegex)) {
             if (lastOrder.equals("package") || lastOrder.equals("")) {
-                orderCounter++;
+                int tmp = 0;
             } else {
                 System.out.println("Error at line " + lineCounter + " ,Wrong place for import.");
                 isClean = false;
@@ -126,8 +121,6 @@ public class Main {
         String trimmedLine = line.trim();
         if (trimmedLine.equals(classRegex)) {
             lastOrder = "class";
-            insideClass = true;
-            orderCounter++;
         } else {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for class.");
             isClean = false;
@@ -140,10 +133,7 @@ public class Main {
         String extraArg = "(, " + returnType + " " + lowerCamelCase + ")*";
         String methodRegex = "public static " + returnType + " " + lowerCamelCase + "\\(" + returnType + " " + lowerCamelCase + extraArg + "\\)\\{";
         String trimmedLine = line.trim();
-        if (trimmedLine.matches(methodRegex)) {
-            insideMethod = true;
-            orderCounter++;
-        } else {
+        if (!trimmedLine.matches(methodRegex)) {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for main method.");
             isClean = false;
         }
@@ -154,7 +144,6 @@ public class Main {
         String trimmedLine = line.trim();
         if (trimmedLine.matches(ifRegex) && trimmedLine.endsWith("{")) {
             lastOrder = "if";
-            orderCounter++;
         } else {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for if command.");
             isClean = false;
@@ -165,7 +154,7 @@ public class Main {
         String elseRegex = "}else\\{$";
         String trimmedLine = line.trim();
         if (trimmedLine.matches(elseRegex)) {
-            orderCounter++;
+            lastOrder = "else";
         } else {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for else command.");
             isClean = false;
@@ -177,7 +166,6 @@ public class Main {
         String trimmedLine = line.trim();
         if (trimmedLine.matches(elseIfRegex) && trimmedLine.endsWith("{")) {
             lastOrder = "else if";
-            orderCounter++;
         } else {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for else if command.");
             isClean = false;
@@ -230,7 +218,7 @@ public class Main {
 
     public static void handleIndentation(String line) {
         if (line.trim().isEmpty() || line.trim().equals("\n")) {
-            int temp = 0;
+            int tmpp = 0;
         } else if (countIndentation(line) != indentSpace) {
             System.out.println("Error at line " + lineCounter + " ,Wrong indentation.");
             isClean = false;
@@ -275,10 +263,7 @@ public class Main {
     public static void handleVariable(String line) {
         String trimmedLine = line.trim();
         String variableRegex = "(byte|String|int|long|float|double|boolean|char)(\\[\\d*]|\\[\\d*])* [a-z]([a-zA-Z0-9]+)( = .*)?;";
-        if (trimmedLine.matches(variableRegex)) {
-            insideClass = true;
-            orderCounter++;
-        } else {
+        if (!trimmedLine.matches(variableRegex)) {
             if (trimmedLine.matches("(byte|String|int|long|float|double|boolean|char)(\\[\\d*]|\\[\\d*])* [A-Z](.)*")) {
                 System.out.println("Error at line " + lineCounter + " ,variable should be camelCase.");
                 isClean = false;
@@ -292,9 +277,7 @@ public class Main {
     public static void handleWhile(String line) {
         String trimmedLine = line.trim();
         String whileRegex = "while \\(.*\\)\\{";
-        if (trimmedLine.matches(whileRegex)) {
-            orderCounter++;
-        } else {
+        if (!trimmedLine.matches(whileRegex)) {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for while.");
             isClean = false;
         }
@@ -304,9 +287,7 @@ public class Main {
         String variableRegex = "(byte|String|int|long|float|double|boolean|char)(\\[\\d*]|\\[\\d*])* [a-z]([a-z]|[A-Z])*( = .*)?;";
         String trimmedLine = line.trim();
         String forRegex = "for\\(" + variableRegex + "(.)*" + "\\)\\{";
-        if (trimmedLine.matches(forRegex)) {
-            orderCounter++;
-        } else {
+        if (!trimmedLine.matches(forRegex)) {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for for.");
             isClean = false;
         }
@@ -319,9 +300,7 @@ public class Main {
         switchDefaultCheck = false;
         String trimmedLine = line.trim();
         String switchRegex = "switch\\(.*\\)\\{";
-        if (trimmedLine.matches(switchRegex)) {
-            orderCounter++;
-        } else {
+        if (!trimmedLine.matches(switchRegex)) {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for switch.");
             isClean = false;
         }
@@ -330,9 +309,7 @@ public class Main {
     public static void handleCase(String line) {
         String trimmedLine = line.trim();
         String caseRegex = "case (.*): (.*)";
-        if (trimmedLine.matches(caseRegex)) {
-            orderCounter++;
-        } else {
+        if (!trimmedLine.matches(caseRegex)) {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for case.");
             isClean = false;
         }
@@ -341,9 +318,7 @@ public class Main {
     public static void handleDefault(String line) {
         String trimmedLine = line.trim();
         String defaultRegex = "default: (.*)";
-        if (trimmedLine.matches(defaultRegex)) {
-            orderCounter++;
-        } else {
+        if (!trimmedLine.matches(defaultRegex)) {
             System.out.println("Error at line " + lineCounter + " ,Wrong format for default");
             isClean = false;
         }
@@ -363,8 +338,7 @@ public class Main {
         }
     }
 
-    public static void handlePackedErrors(String line){
-
+    public static void hanleAllOrders(String line){
         String trimmedLine = line.trim();
         if (trimmedLine.startsWith("package")) {
             handlePackage(line);
@@ -395,18 +369,15 @@ public class Main {
         } else if (trimmedLine.startsWith("default")) {
             handleDefault(line);
         }
-        handleDefaultCheck(line);
-
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        String filename = scanner.nextLine();
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader("C:\\Users\\intech\\Desktop\\AP codes\\Project1\\untitled\\src\\test.txt"));
+            reader = new BufferedReader(new FileReader("src/main/java/ir/ac/kntu/"+filename));
             String line = reader.readLine();
-
-
             while (line != null) {
 
                 ///skip or end
@@ -415,14 +386,11 @@ public class Main {
                     break;
                 }
                 String trimmedLine = line.trim();
-
+                if (!trimmedLine.isEmpty()) {
+                    orderCounter++;
+                }
                 line = line.replaceAll("\t", "    ");
-                if (indentSpace == 4) {
-                    insideClass = true;
-                }
-                if (indentSpace == 8) {
-                    insideMethod = true;
-                }
+
                 int openBracketIndent = countBracketOpenIndent(line);
                 int closeBracketIndent = countBracketCloseIndent(line);
                 indentSpace = indentSpace + closeBracketIndent;
@@ -432,6 +400,9 @@ public class Main {
                 handleIndentation(line);
                 handleMoreCommands(line);
                 handleLength(line);
+                hanleAllOrders(line);
+                handleDefaultCheck(line);
+
                 indentSpace = indentSpace + openBracketIndent;
                 lineCounter++;
                 line = reader.readLine();
