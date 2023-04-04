@@ -1,0 +1,38 @@
+package mmd.adsfas;
+import mmd.*;
+public class Main{
+    public static void main(String[] args){
+        if(some characters){
+            statements;
+        }
+        int[][] mmd;
+        while (true){
+        }
+        int aaa = 50;
+        for(int aa = 0; asfasfas){
+            int[][] aaa = 50;
+        }
+        if(mme is bad){
+            int aaaaa = 85;
+        }else{
+            int aaa;
+        }
+        switch(are){
+            case na: na
+            default: mmd
+        }
+        switch(damnboi){
+            case 1: damn
+            case 2: boi
+            default: mmd
+        }
+    }
+    public static String mmd(String aaaa, String aa){
+        for(int i = 0; i<50; i++){
+            statements are here;
+        }
+    }
+    public static String mmd(String args, int[][] aa, long mmd){
+        int mamad = 50;
+    }
+}

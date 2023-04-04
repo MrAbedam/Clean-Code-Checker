@@ -1,5 +1,7 @@
 package ir.ac.kntu;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -393,8 +395,8 @@ public class Main {
 
                 int openBracketIndent = countBracketOpenIndent(line);
                 int closeBracketIndent = countBracketCloseIndent(line);
-                indentSpace = indentSpace + closeBracketIndent;
 
+                indentSpace = indentSpace + closeBracketIndent;
                 handleSingleBracket(line);
                 handleSingleSemiColon(line);
                 handleIndentation(line);
@@ -402,7 +404,6 @@ public class Main {
                 handleLength(line);
                 hanleAllOrders(line);
                 handleDefaultCheck(line);
-
                 indentSpace = indentSpace + openBracketIndent;
                 lineCounter++;
                 line = reader.readLine();
@@ -413,6 +414,14 @@ public class Main {
         }
         if (isClean) {
             System.out.println("Your code doesn't stink!");
+            makeSmileyFace();
         }
+    }
+    public static void makeSmileyFace(){
+        JFrame frame = new JFrame("Clown Face");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(new Smiley());
+        frame.setSize(300, 400);
+        frame.setVisible(true);
     }
 }
